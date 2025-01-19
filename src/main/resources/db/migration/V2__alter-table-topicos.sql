@@ -1,0 +1,4 @@
+ALTER TABLE `topicos`
+ADD UNIQUE INDEX `titulo_UNIQUE` (`titulo` ASC) VISIBLE,
+ADD UNIQUE INDEX `mensaje_UNIQUE` (`mensaje` ASC) VISIBLE;
+;
