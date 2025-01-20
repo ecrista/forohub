@@ -1,6 +1,8 @@
 package com.aluralatamcursos.forohub.infra.errors;
 
 import com.aluralatamcursos.forohub.domain.ValidacionException;
+import com.aluralatamcursos.forohub.domain.respuesta.Respuesta;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
