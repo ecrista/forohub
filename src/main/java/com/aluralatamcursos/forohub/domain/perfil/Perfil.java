@@ -18,6 +18,11 @@ public class Perfil {
     public Perfil() {
     }
 
+    public Perfil(Perfil perfil) {
+        this.id= perfil.id;
+        this.nombre=perfil.nombre;
+    }
+
     public List<Usuario> getUsuarios() {
         return usuarios;
     }

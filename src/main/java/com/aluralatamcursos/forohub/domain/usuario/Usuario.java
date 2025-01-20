@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +24,7 @@ public class Usuario implements UserDetails {
     private String nombre;
     private String correoElectronico;
     private String contrasena;
+    private Boolean activo;
     @ManyToMany
     @JoinTable(name = "usuarios_has_perfiles",joinColumns = @JoinColumn(name = "usuarios_id"),inverseJoinColumns = @JoinColumn(name = "perfiles_id"))
     private List<Perfil> perfiles;
@@ -31,6 +34,14 @@ public class Usuario implements UserDetails {
     private List<Respuesta> respuestas;
 
     public Usuario() {
+    }
+
+    public Usuario(DatosRegistroUsuario datosRegistroUsuario, List<Perfil> listaPerfiles) {
+        this.nombre = datosRegistroUsuario.nombre();
+        this.correoElectronico = datosRegistroUsuario.email();
+        this.contrasena = generarContrasena(datosRegistroUsuario.contrasena());
+        this.activo = true;
+        this.perfiles = listaPerfiles;
     }
 
     public String getContrasena() {
@@ -72,9 +83,39 @@ public class Usuario implements UserDetails {
         this.perfiles = perfiles;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public List<Topico> getTopicos() {
+        return topicos;
+    }
+
+    public void setTopicos(List<Topico> topicos) {
+        this.topicos = topicos;
+    }
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(List<Respuesta> respuestas) {
+        this.respuestas = respuestas;
+    }
+
+    public String generarContrasena(String pssw) {
+        var pass=new BCryptPasswordEncoder().encode(pssw);
+        return pass;
     }
 
     @Override
