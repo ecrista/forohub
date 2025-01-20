@@ -1,6 +1,7 @@
 package com.aluralatamcursos.forohub.controllers;
 
 import com.aluralatamcursos.forohub.domain.topico.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RestController
 @RequestMapping("topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired

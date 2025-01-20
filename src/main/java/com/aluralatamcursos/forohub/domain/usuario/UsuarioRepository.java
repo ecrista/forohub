@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     @Query("Select u from Usuario u WHERE u.correoElectronico=:username")
@@ -14,4 +16,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
 
     Page<Usuario> findByActivoTrue(Pageable paginacion);
+
+    Optional<Usuario> findByIdAndActivoTrue(Long id);
 }

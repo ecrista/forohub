@@ -5,7 +5,6 @@ import com.aluralatamcursos.forohub.domain.curso.Curso;
 import com.aluralatamcursos.forohub.domain.curso.CursoRepository;
 import com.aluralatamcursos.forohub.domain.usuario.Usuario;
 import com.aluralatamcursos.forohub.domain.usuario.UsuarioRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;

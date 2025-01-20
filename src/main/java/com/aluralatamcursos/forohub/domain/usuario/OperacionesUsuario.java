@@ -1,13 +1,8 @@
 package com.aluralatamcursos.forohub.domain.usuario;
 
 import com.aluralatamcursos.forohub.domain.ValidacionException;
-import com.aluralatamcursos.forohub.domain.curso.Curso;
 import com.aluralatamcursos.forohub.domain.perfil.Perfil;
 import com.aluralatamcursos.forohub.domain.perfil.PerfilRepository;
-import com.aluralatamcursos.forohub.domain.topico.DatosListadoTopico;
-import com.aluralatamcursos.forohub.domain.topico.DatosRegistroTopico;
-import com.aluralatamcursos.forohub.domain.topico.DatosRespuestaTopico;
-import com.aluralatamcursos.forohub.domain.topico.Topico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -71,5 +66,40 @@ public class OperacionesUsuario {
             throw new ValidacionException("No existe un usuario con el id proporcionado");
         }
     }
-    
+
+    public DatosRespuestaUsuarioPrivado actualizarUsuario(Long id, DatosActualizarUsuario datos) {
+
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()){
+            try {
+                Usuario usuarioExistente=usuario.get();
+                List<Perfil> listaPerfiles= new ArrayList<>();
+                if (datos.perfiles()!=null && !datos.perfiles().isEmpty()){
+                    listaPerfiles=datos.perfiles().stream().map(p->{
+                        Optional<Perfil> perfil=perfilRepository.findByNombre(p);
+                        if (!perfil.isPresent())
+                            throw new ValidacionException("No existe el perfil "+p+" que se proporciono");
+                        return new Perfil(perfil.get());
+                    }).toList();
+                }
+                usuarioExistente.actualizarDatos(datos,listaPerfiles);
+                return new DatosRespuestaUsuarioPrivado(usuarioExistente);
+            }catch (DataIntegrityViolationException e) {
+                throw new ValidacionException(e);
+            }
+        }else {
+            throw new ValidacionException("No existe el Id del usuario que se proporciono");
+        }
+    }
+
+    public void borrarUsuario(Long id) {
+        var usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent()){
+            var usuarioExiste=usuario.get();
+            usuarioExiste.desactivarUsuario();
+        }
+        else{
+            throw new ValidacionException("No existe el Id del Usuario que se proporciono");
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.aluralatamcursos.forohub.domain.usuario;
 
 import com.aluralatamcursos.forohub.domain.perfil.Perfil;
 import com.aluralatamcursos.forohub.domain.respuesta.Respuesta;
+import com.aluralatamcursos.forohub.domain.topico.Estado;
 import com.aluralatamcursos.forohub.domain.topico.Topico;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -146,5 +147,17 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void actualizarDatos(DatosActualizarUsuario datos, List<Perfil> listaPerfiles) {
+        if (listaPerfiles!=null && !listaPerfiles.isEmpty())
+            this.perfiles=listaPerfiles;
+        if (datos.email()!=null)
+            this.correoElectronico= datos.email();
+        if (datos.contrasena()!=null)
+            this.contrasena=generarContrasena(datos.contrasena());
+    }
+    public void desactivarUsuario() {
+        this.activo=false;
     }
 }
